@@ -99,6 +99,29 @@
         startTime = new Date().getTime();
       }
 
+      function handleTabKey(event) {
+        // Handle the Tab key press
+        if (event.key === "Tab") {
+            event.preventDefault(); // Prevent the default Tab behavior (e.g., moving focus)
+            
+            // Get the current cursor position
+            const cursorPosition = document.getElementById("userInput").selectionStart;
+
+            // Get the text before and after the cursor position
+            const textBeforeCursor = document.getElementById("userInput").value.substring(0, cursorPosition);
+            const textAfterCursor = document.getElementById("userInput").value.substring(cursorPosition);
+
+            // Insert an indent (e.g., four spaces)
+            const updatedText = textBeforeCursor + "    " + textAfterCursor;
+
+            // Update the textarea value with the modified text
+            document.getElementById("userInput").value = updatedText;
+
+            // Move the cursor to the position after the inserted indent
+            document.getElementById("userInput").setSelectionRange(cursorPosition + 4, cursorPosition + 4);
+        }
+    }
+
       function startTimer() {
         // Start the timer only if it hasn't started yet
         if (!timer) {
