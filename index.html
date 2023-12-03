@@ -138,23 +138,12 @@
         }
         // Create an object with the data to submit
         const data = {
-          userName: document.getElementById("userName").value,
-          teacherName: document.getElementById("teacherName").value,
-          score: document
-            .getElementById("score")
-            .innerText.split(":")[1]
-            .trim(),
-          errorCount: document
-            .getElementById("errorCount")
-            .innerText.split(":")[1]
-            .trim(),
-          testCounter: document
-            .getElementById("testCount")
-            .innerText.split(":")[1]
-            .trim(),
-           userInput: document
-             .getElementById("userInput")
-             .innerText.split(":")[1]
+        userName: document.getElementById("userName").value,
+        teacherName: document.getElementById("teacherName").value,
+        score: document.getElementById("score").innerText.split(":")[1].trim(),
+        errorCount: document.getElementById("errorCount").innerText.split(":")[1].trim(),
+        testCounter: document.getElementById("testCount").innerText.split(":")[1].trim(),
+        userInput: userInput, // Use the value property
         };
 
         // Submit data to Google Sheet
