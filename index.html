@@ -1,197 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Typing Test</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
+      body {
+        font-family: Arial, sans-serif;
+      }
 
-        form {
-            max-width: 400px;
-            margin: 50px auto;
-        }
+      form {
+        max-width: 400px;
+        margin: 50px auto;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <form id="startForm">
-        <label for="userName">Your Name:</label>
-        <input type="text" id="userName" name="userName" required />
+      <label for="userName">Your Name:</label>
+      <input type="text" id="userName" name="userName" required />
 
-        <label for="teacherName">Select Teacher:</label>
-        <select id="teacherName" name="teacherName" required>
-            <option value="teacher1">Teacher 1</option>
-            <option value="teacher2">Teacher 2</option>
-            <!-- Add more options as needed -->
-        </select>
+      <label for="teacherName">Select Teacher:</label>
+      <select id="teacherName" name="teacherName" required>
+        <option value="teacher1">Teacher 1</option>
+        <option value="teacher2">Teacher 2</option>
+        <!-- Add more options as needed -->
+      </select>
 
-        <button type="button" onclick="startTypingTest()">
-            Start Typing Test
-        </button>
+      <button type="button" onclick="startTypingTest()">
+        Start Typing Test
+      </button>
     </form>
 
     <div id="typingTestScreen" style="display: none">
-        <h2>Typing Test</h2>
-        <p>Welcome, <span id="typedUserName"></span>! Type the following text:</p>
-        <p id="textToType">
-            Typing, or keyboarding, has always been important: but it is much more
-            important now than ever before because computer keyboards are important
-            to almost every part of our lives. We use keyboards like we used to use
-            pens and pencils. We want to be the very fastest keyboarders.
-        </p>
+      <h2>Typing Test</h2>
+      <p>Welcome, <span id="typedUserName"></span>! Type the following text:</p>
+      <p id="textToType">
+        Typing, or keyboarding, has always been important: but it is much more
+        important now than ever before because computer keyboards are important
+        to almost every part of our lives. We use keyboards like we used to use
+        pens and pencils. We want to be the very fastest keyboarders.
+      </p>
 
-        <label for="userInput">Your Typing:</label>
-        <textarea id="userInput" rows="4" cols="50" oninput="startTimer()"></textarea>
+      <label for="userInput">Your Typing:</label>
+      <textarea
+        id="userInput"
+        rows="4"
+        cols="50"
+        oninput="startTimer()"
+      ></textarea>
 
-        <button type="button" onclick="submitTypingTest()">Submit</button>
+      <button type="button" onclick="submitTypingTest()">Submit</button>
 
-        <div id="results" style="display: none">
-            <h3>Results</h3>
-            <p id="errorCount"></p>
-            <p id="score"></p>
-        </div>
+      <div id="results" style="display: none">
+        <h3>Results</h3>
+        <p id="errorCount"></p>
+        <p id="score"></p>
+      </div>
     </div>
 
     <script>
-        let timer;
-        let startTime;
-        let testCounter = 0; // Counter for the number of tests
-        const maxTests = 3; // Maximum number of tests
-        const masterText = 'Typing, or keyboarding, has always been important: but it is much more important now than ever before because computer keyboards are important to almost every part of our lives. We use keyboards like we used to use pens and pencils. We want to be the very fastest keyboarders. Typing, or keyboarding, has always been important: but it is much more important now than ever before because computer keyboards are important to almost every part of our lives. We use keyboards like we used to use pens and pencils. We want to be the very fastest keyboarders.';
+      let timer;
+      let startTime;
+      let testCounter = 0; // Counter for the number of tests
+      const maxTests = 3; // Maximum number of tests
+      const masterText =
+        "Typing, or keyboarding, has always been important: but it is much more important now than ever before because computer keyboards are important to almost every part of our lives. We use keyboards like we used to use pens and pencils. We want to be the very fastest keyboarders. Typing, or keyboarding, has always been important: but it is much more important now than ever before because computer keyboards are important to almost every part of our lives. We use keyboards like we used to use pens and pencils. We want to be the very fastest keyboarders.";
 
-        document.addEventListener('copy', function (e) {
-            e.preventDefault();
-        });
+      document.addEventListener("copy", function (e) {
+        e.preventDefault();
+      });
 
-        document.addEventListener('paste', function (e) {
-            e.preventDefault();
-        });
+      document.addEventListener("paste", function (e) {
+        e.preventDefault();
+      });
 
-        document.querySelector('input').spellcheck = false;
+      document.querySelector("input").spellcheck = false;
 
-        function startTypingTest() {
-            // Hide the start form
-            document.getElementById('startForm').style.display = 'none';
+      function startTypingTest() {
+        // Hide the start form
+        document.getElementById("startForm").style.display = "none";
 
-            // Show the typing test screen
-            document.getElementById('typingTestScreen').style.display = 'block';
+        // Show the typing test screen
+        document.getElementById("typingTestScreen").style.display = "block";
 
-            // Display the user's name on the typing test screen
-            const userName = document.getElementById('userName').value;
-            document.getElementById('typedUserName').innerText = userName;
+        // Display the user's name on the typing test screen
+        const userName = document.getElementById("userName").value;
+        document.getElementById("typedUserName").innerText = userName;
 
-             // Display the current test number
-             document.getElementById('textToType').innerText = `Test ${testCounter}: ${masterText}`;
+        // Display the current test number
+        document.getElementById(
+          "textToType"
+        ).innerText = `Test ${testCounter}: ${masterText}`;
 
-            // Record the start time
-            startTime = new Date().getTime();
+        // Record the start time
+        startTime = new Date().getTime();
+      }
+
+      function startTimer() {
+        // Start the timer only if it hasn't started yet
+        if (!timer) {
+          timer = setTimeout(submitTypingTest, 60000); // One minute (60,000 milliseconds)
+        }
+      }
+
+      function submitTypingTest() {
+        // Clear the timer
+        clearTimeout(timer);
+
+        // Retrieve the user's typing input
+        const userInput = document.getElementById("userInput").value;
+
+        // Calculate the score and errors
+        const { errors, errorCount } = calculateErrors(userInput, masterText);
+        const score = calculateScore(userInput.length, errorCount);
+
+        // Display the results
+        document.getElementById(
+          "errorCount"
+        ).innerText = `Errors: ${errorCount}`;
+        document.getElementById("score").innerText = `Score: ${score}`;
+        document.getElementById("results").style.display = "block";
+
+        // If there are more tests, reset the timer and allow the user to start the next test
+        if (testCounter < maxTests) {
+          timer = null; // Reset the timer
+          document.getElementById("userInput").value = ""; // Clear the user input
+          document.getElementById("results").style.display = "none"; // Hide the results
+          startTypingTest(); // Start the next test
+        } else {
+          // If all tests are completed, show a message or perform any additional actions
+          alert("All tests completed!");
+          resetTest(); // Optionally, reset the test for the next session
+        }
+        // Create an object with the data to submit
+        const data = {
+          userName: document.getElementById("userName").value,
+          teacherName: document.getElementById("teacherName").value,
+          score: document
+            .getElementById("score")
+            .innerText.split(":")[1]
+            .trim(),
+          errorCount: document
+            .getElementById("errorCount")
+            .innerText.split(":")[1]
+            .trim(),
+        };
+
+        function resetTest() {
+          // Reset the test data
+          testCounter = 0;
+          document.getElementById("startForm").style.display = "block";
+          document.getElementById("typingTestScreen").style.display = "none";
+          document.getElementById("results").style.display = "none";
+
+          // Submit data to Google Sheet
+          submitToGoogleSheet(data);
+        }
+      }
+
+      function calculateErrors(userInput, masterText) {
+        let errors = 0;
+        let errorCount = 0;
+
+        // Ensure both strings have the same length
+        const minLength = Math.min(userInput.length, masterText.length);
+
+        for (let i = 0; i < minLength; i++) {
+          if (userInput[i] !== masterText[i]) {
+            errors++;
+            errorCount++;
+          }
         }
 
-        function startTimer() {
-            // Start the timer only if it hasn't started yet
-            if (!timer) {
-                timer = setTimeout(submitTypingTest, 60000); // One minute (60,000 milliseconds)
+        // Add the remaining characters from the longer string as errors
+        errors += Math.abs(userInput.length - masterText.length);
+
+        return { errors, errorCount };
+      }
+
+      function calculateScore(totalCharactersTyped, errorCount) {
+        // For simplicity, you can customize the scoring logic based on your requirements
+        // Here, the score is calculated as (total characters typed / 5) - (errorCount)
+        return Math.max(0, Math.floor(totalCharactersTyped / 5));
+      }
+
+      function submitToGoogleSheet(data) {
+        const url =
+          "https://script.google.com/macros/s/AKfycbx5MXy6YuRvoaWldDzQ6Yf8xIy5xG8kOCJcRt5bRRdIxxG5YnBj-u7V2ibH2RM6nbrszQ/exec" +
+          "?callback=submitCallback";
+        fetch(url, {
+          redirect: "follow",
+          method: "POST",
+          mode: "no-cors", // Set the request's mode to 'no-cors'
+          headers: {
+            "Content-Type": "text/plain;application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
             }
-        }
-
-        function submitTypingTest() {
-            // Clear the timer
-            clearTimeout(timer);
-
-            // Retrieve the user's typing input
-            const userInput = document.getElementById('userInput').value;
-
-            // Calculate the score and errors
-            const { errors, errorCount } = calculateErrors(userInput, masterText);
-            const score = calculateScore(userInput.length, errorCount);
-
-            // Display the results
-            document.getElementById('errorCount').innerText = `Errors: ${errorCount}`;
-            document.getElementById('score').innerText = `Score: ${score}`;
-            document.getElementById('results').style.display = 'block';
-
-             // If there are more tests, reset the timer and allow the user to start the next test
-             if (testCounter < maxTests) {
-                timer = null; // Reset the timer
-                document.getElementById('userInput').value = ''; // Clear the user input
-                document.getElementById('results').style.display = 'none'; // Hide the results
-                startTimer(); // Start the timer for the next test
-            } else {
-                // If all tests are completed, show a message or perform any additional actions
-                alert('All tests completed!');
-                resetTest(); // Optionally, reset the test for the next session
-            }
-            // Create an object with the data to submit
-            const data = {
-                userName: document.getElementById('userName').value,
-                teacherName: document.getElementById('teacherName').value,
-                score: document.getElementById('score').innerText.split(":")[1].trim(),
-                errorCount: document.getElementById('errorCount').innerText.split(":")[1].trim(),
-            };
-
-            function resetTest() {
-            // Reset the test data
-            testCounter = 0;
-            document.getElementById('startForm').style.display = 'block';
-            document.getElementById('typingTestScreen').style.display = 'none';
-            document.getElementById('results').style.display = 'none';
-
-            // Submit data to Google Sheet
-            submitToGoogleSheet(data);
-        }
-    
-
-        function calculateErrors(userInput, masterText) {
-            let errors = 0;
-            let errorCount = 0;
-
-            // Ensure both strings have the same length
-            const minLength = Math.min(userInput.length, masterText.length);
-
-            for (let i = 0; i < minLength; i++) {
-                if (userInput[i] !== masterText[i]) {
-                    errors++;
-                    errorCount++;
-                }
-            }
-
-            // Add the remaining characters from the longer string as errors
-            errors += Math.abs(userInput.length - masterText.length);
-
-            return { errors, errorCount };
-        }
-
-        function calculateScore(totalCharactersTyped, errorCount) {
-            // For simplicity, you can customize the scoring logic based on your requirements
-            // Here, the score is calculated as (total characters typed / 5) - (errorCount)
-            return Math.max(0, Math.floor(totalCharactersTyped / 5));
-        }
-
-        function submitToGoogleSheet(data) {
-            const url = 'https://script.google.com/macros/s/AKfycbx5MXy6YuRvoaWldDzQ6Yf8xIy5xG8kOCJcRt5bRRdIxxG5YnBj-u7V2ibH2RM6nbrszQ/exec' + '?callback=submitCallback';
-            fetch(url, {
-                redirect: "follow",
-                method: 'POST',
-                mode: 'no-cors', // Set the request's mode to 'no-cors'
-                headers: {
-                    'Content-Type': 'text/plain;application/json',
-                },
-                body: JSON.stringify(data),
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(text => console.log(text))
-                .catch(error => console.error('Error:', error));
-        }
+            return response.text();
+          })
+          .then((text) => console.log(text))
+          .catch((error) => console.error("Error:", error));
+      }
     </script>
-</body>
-
+  </body>
 </html>
