@@ -1,45 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Typing Test</title>
     <style>
         body {
             font-family: Arial, sans-serif;
         }
+
         form {
             max-width: 400px;
             margin: 50px auto;
         }
     </style>
 </head>
+
 <body>
     <form id="startForm">
         <label for="userName">Your Name:</label>
-        <input type="text" id="userName" name="userName" required>
-        
+        <input type="text" id="userName" name="userName" required />
+
         <label for="teacherName">Select Teacher:</label>
         <select id="teacherName" name="teacherName" required>
             <option value="teacher1">Teacher 1</option>
             <option value="teacher2">Teacher 2</option>
             <!-- Add more options as needed -->
         </select>
-        
-        <button type="button" onclick="startTypingTest()">Start Typing Test</button>
+
+        <button type="button" onclick="startTypingTest()">
+            Start Typing Test
+        </button>
     </form>
 
-    <div id="typingTestScreen" style="display: none;">
+    <div id="typingTestScreen" style="display: none">
         <h2>Typing Test</h2>
         <p>Welcome, <span id="typedUserName"></span>! Type the following text:</p>
-        <p id="textToType">Typing, or keyboarding, has always been important: but it is much more important now than ever before because computer keyboards are important to almost every part of our lives. We use keyboards like we used to use pens and pencils. We want to be the very fastest keyboarders.</p>
-        
+        <p id="textToType">
+            Typing, or keyboarding, has always been important: but it is much more
+            important now than ever before because computer keyboards are important
+            to almost every part of our lives. We use keyboards like we used to use
+            pens and pencils. We want to be the very fastest keyboarders.
+        </p>
+
         <label for="userInput">Your Typing:</label>
         <textarea id="userInput" rows="4" cols="50" oninput="startTimer()"></textarea>
 
         <button type="button" onclick="submitTypingTest()">Submit</button>
-        
-        <div id="results" style="display: none;">
+
+        <div id="results" style="display: none">
             <h3>Results</h3>
             <p id="errorCount"></p>
             <p id="score"></p>
@@ -49,7 +59,17 @@
     <script>
         let timer;
         let startTime;
-        const masterText = 'Typing, or keyboarding, has always been important: but it is much more important now than ever before because computer keyboards are important to almost every part of our lives. We use keyboards like we used to use pens and pencils. We want to be the very fastest keyboarders.';
+        const masterText = 'Typing, or keyboarding, has always been important: but it is much more important now than ever before because computer keyboards are important to almost every part of our lives. We use keyboards like we used to use pens and pencils. We want to be the very fastest keyboarders. Typing, or keyboarding, has always been important: but it is much more important now than ever before because computer keyboards are important to almost every part of our lives. We use keyboards like we used to use pens and pencils. We want to be the very fastest keyboarders.';
+
+        document.addEventListener('copy', function (e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('paste', function (e) {
+            e.preventDefault();
+        });
+
+        document.querySelector('input').spellcheck = false;
 
         function startTypingTest() {
             // Hide the start form
@@ -88,7 +108,18 @@
             document.getElementById('errorCount').innerText = `Errors: ${errorCount}`;
             document.getElementById('score').innerText = `Score: ${score}`;
             document.getElementById('results').style.display = 'block';
+            // Create an object with the data to submit
+            const data = {
+                userName: document.getElementById('userName').value,
+                teacherName: document.getElementById('teacherName').value,
+                score: document.getElementById('score').innerText.split(":")[1].trim(),
+                errorCount: document.getElementById('errorCount').innerText.split(":")[1].trim(),
+            };
+
+            // Submit data to Google Sheet
+            submitToGoogleSheet(data);
         }
+    
 
         function calculateErrors(userInput, masterText) {
             let errors = 0;
@@ -113,8 +144,28 @@
         function calculateScore(totalCharactersTyped, errorCount) {
             // For simplicity, you can customize the scoring logic based on your requirements
             // Here, the score is calculated as (total characters typed / 5) - (errorCount)
-            return Math.max(0, Math.floor(totalCharactersTyped / 5) - errorCount);
+            return Math.max(0, Math.floor(totalCharactersTyped / 5));
+        }
+
+        function submitToGoogleSheet(data) {
+            const url = 'https://script.google.com/macros/s/AKfycbzsYJb4lyEBwvPS-ikxQo-fbHAaWpkfLRbenmcyoNYahIo4M_EgY-NNHZ7j2Mwj6S1vpg/exec' + '?callback=submitCallback';
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(text => console.log(text))
+                .catch(error => console.error('Error:', error));
         }
     </script>
 </body>
+
 </html>
