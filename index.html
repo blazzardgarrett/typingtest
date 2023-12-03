@@ -37,6 +37,7 @@
       <h2>Typing Test</h2>
       <p>Welcome, <span id="typedUserName"></span>! Type the following text:</p>
       <p id="textToType">
+        <span id="testCount"></span>
         Typing, or keyboarding, has always been important: but it is much more
         important now than ever before because computer keyboards are important
         to almost every part of our lives. We use keyboards like we used to use
@@ -125,6 +126,7 @@
 
         // If there are more tests, reset the timer and allow the user to start the next test
         if (testCounter < maxTests) {
+          testCounter++;
           timer = null; // Reset the timer
           document.getElementById("userInput").value = ""; // Clear the user input
           document.getElementById("results").style.display = "none"; // Hide the results
@@ -132,6 +134,7 @@
         } else {
           // If all tests are completed, show a message or perform any additional actions
           alert("All tests completed!");
+          location.reload();
         }
         // Create an object with the data to submit
         const data = {
@@ -144,6 +147,10 @@
           errorCount: document
             .getElementById("errorCount")
             .innerText.split(":")[1]
+            .trim(),
+          testCounter: document
+            .getElementById("testCount")
+            .innerHTML.split(":")[1]
             .trim(),
         };
 
