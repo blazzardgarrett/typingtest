@@ -132,7 +132,6 @@
         } else {
           // If all tests are completed, show a message or perform any additional actions
           alert("All tests completed!");
-          resetTest(); // Optionally, reset the test for the next session
         }
         // Create an object with the data to submit
         const data = {
@@ -148,16 +147,8 @@
             .trim(),
         };
 
-        function resetTest() {
-          // Reset the test data
-          testCounter = 0;
-          document.getElementById("startForm").style.display = "block";
-          document.getElementById("typingTestScreen").style.display = "none";
-          document.getElementById("results").style.display = "none";
-
-          // Submit data to Google Sheet
-          submitToGoogleSheet(data);
-        }
+        // Submit data to Google Sheet
+        submitToGoogleSheet(data);
       }
 
       function calculateErrors(userInput, masterText) {
