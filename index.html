@@ -12,14 +12,12 @@
     <form id="startForm">
         <label for="userName">Your Name:</label>
         <input type="text" id="userName" name="userName" required />
-
         <label for="teacherName">Select Teacher:</label>
         <select id="teacherName" name="teacherName" required>
             <option value="teacher1">Teacher 1</option>
             <option value="teacher2">Teacher 2</option>
             <!-- Add more options as needed -->
         </select>
-
         <button type="button" onclick="startTypingTest()">
             Start Typing Test
         </button>
@@ -34,10 +32,10 @@
         The test will auto submit after the Minute is up. Please wait for Mrs Blazzard before you Start again!
         </p Hide>
 
-        <label for="userInput">Your Typing:</label>
+        <label for="userInput">Your Test:</label>
         <textarea id="userInput" rows="4" cols="50" oninput="startTimer()" onkeydown="handleTabKey(event)"></textarea>
 
-        <button type="button" onclick="submitTypingTest()">Submit</button>
+        <button type="button" style="display: none;" onclick="submitTypingTest()">Submit</button>
 
         <div id="results" style="display: none">
             <h3>Results</h3>
@@ -66,23 +64,29 @@
         document.querySelector("input").spellcheck = false;
 
         function startTypingTest() {
-            // Hide the start form
-            document.getElementById("startForm").style.display = "none";
+            if (document.getElementById("userName").value.length > 2) {
+                // Hide the start form
+                document.getElementById("startForm").style.display = "none";
 
-            // Show the typing test screen
-            document.getElementById("typingTestScreen").style.display = "block";
+                // Show the typing test screen
+                document.getElementById("typingTestScreen").style.display = "block";
 
-            // Display the user's name on the typing test screen
-            const userName = document.getElementById("userName").value;
-            document.getElementById("typedUserName").innerText = userName;
+                // Display the user's name on the typing test screen
+                const userName = document.getElementById("userName").value;
+                document.getElementById("typedUserName").innerText = userName;
 
-            // Display the current test number
-            document.getElementById(
-                "testCount"
-            ).innerText = `Test ${testCounter}`;
+                // Display the current test number
+                document.getElementById(
+                    "testCount"
+                ).innerText = `Test ${testCounter}`;
 
-            // Record the start time
-            startTime = new Date().getTime();
+                // Record the start time
+                startTime = new Date().getTime();
+            }
+            else
+            {
+                alert("You need to Enter Your Name!")
+            }
         }
 
         function handleTabKey(event) {
@@ -131,6 +135,15 @@
             document.getElementById("score").innerText = `Score: ${score}`;
             document.getElementById("results").style.display = "block";
 
+            const data = {
+                userName: document.getElementById("userName").value,
+                teacherName: document.getElementById("teacherName").value,
+                score: score,
+                errorCount: document.getElementById("userInput").value
+            }
+
+            submitToGoogleSheet(data);
+
             // If there are more tests, reset the timer and allow the user to start the next test
             if (testCounter < maxTests) {
                 testCounter++;
@@ -143,18 +156,6 @@
                 alert("All tests completed!");
                 location.reload();
             }
-            // Create an object with the data to submit
-            const data = {
-                userName: document.getElementById("userName").value,
-                teacherName: document.getElementById("teacherName").value,
-                score: score,
-                errorCount: errorCount,
-                testCount: "1",
-                userInput: document.getElementById("userInput").value,
-            };
-
-            // Submit data to Google Sheet
-            submitToGoogleSheet(data);
         }
 
         function calculateErrors(userInput, masterText) {
