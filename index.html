@@ -148,8 +148,10 @@
             const data = {
                 userName: document.getElementById("userName").value,
                 teacherName: document.getElementById("teacherName").value,
-                score: document.getElementById("score").innerText.split(":")[1].trim(),
-                errorCount: document.getElementById("errorCount").innerText.split(":")[1].trim(),
+                score: score,
+                errorCount: errorCount,
+                testCount: testCounter,
+                userInput: userInput,
             };
 
             // Submit data to Google Sheet
