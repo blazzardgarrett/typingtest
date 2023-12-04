@@ -49,6 +49,7 @@
     <script>
         let timer;
         let startTime;
+        let userInput;
         let testCounter = 1; // Counter for the number of tests
         const maxTests = 3; // Maximum number of tests
         const masterText =
@@ -126,9 +127,7 @@
             const score = calculateScore(userInput.length, errorCount);
 
             // Display the results
-            document.getElementById(
-                "errorCount"
-            ).innerText = `Errors: ${errorCount}`;
+            document.getElementById("errorCount").innerText = `Errors: ${errorCount}`;
             document.getElementById("score").innerText = `Score: ${score}`;
             document.getElementById("results").style.display = "block";
 
