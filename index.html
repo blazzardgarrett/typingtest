@@ -29,16 +29,16 @@
     </form>
 
     <div id="typingTestScreen" style="display: none">
-        <h2>Mrs. Blazzard's Typing Check</h2>
+        <h2>Mrs. Blazzard's Keyboard Timing</h2>
         <p>Welcome, <span id="typedUserName"></span>! <br> </p>
         <p id="textToType">
             <span id="testCount"></span>
         <p><br></p>
-        The 1 minute timer will start when you start to type and auto submit after the minute is up. Please wait for Mrs. Blazzard before you start and after every go.
-        </p Hide>
+        You will type the paragraph three different times. </p><p>Mrs. Blazzard will score the best attempt.</p><p>Do your best!
+        </p Hide> <br>
 
-        <label for="userInput">Your Test:</label>
-        <textarea id="userInput" rows="8" cols="50" oninput="startTimer()" onkeydown="handleTabKey(event)"></textarea>
+        <label for="userInput">You will key within the textbox:</label>
+        <textarea id="userInput" rows="8" cols="50" style="font-size: 20px;" oninput="startTimer()" onkeydown="handleTabKey(event)"></textarea>
 
         <button type="button" style="display: none;" onclick="submitTypingTest()">Submit</button>
 
@@ -158,7 +158,7 @@
                 startTypingTest(); // Start the next test
             } else {
                 // If all tests are completed, show a message or perform any additional actions
-                alert("All tests completed!");
+                alert("Congratulations! Thank you for keyboarding today.");
                 location.reload();
             }
         }
