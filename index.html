@@ -29,16 +29,16 @@
     </form>
 
     <div id="typingTestScreen" style="display: none">
-        <h2>Typing Test</h2>
-        <p>Welcome, <span id="typedUserName"></span>! <br> Please wait for Mrs. Blazzard before you Start</p>
+        <h2>Mrs. Blazzard's Typing Check</h2>
+        <p>Welcome, <span id="typedUserName"></span>! <br> </p>
         <p id="textToType">
             <span id="testCount"></span>
         <p><br></p>
-        The test will auto submit after the Minute is up. Please wait for Mrs Blazzard before you Start again!
+        The 1 minute timer will start when you start to type and auto submit after the minute is up. Please wait for Mrs. Blazzard before you start and after every go.
         </p Hide>
 
         <label for="userInput">Your Test:</label>
-        <textarea id="userInput" rows="4" cols="50" oninput="startTimer()" onkeydown="handleTabKey(event)"></textarea>
+        <textarea id="userInput" rows="8" cols="50" oninput="startTimer()" onkeydown="handleTabKey(event)"></textarea>
 
         <button type="button" style="display: none;" onclick="submitTypingTest()">Submit</button>
 
