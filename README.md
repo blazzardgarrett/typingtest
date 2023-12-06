@@ -1,4 +1,4 @@
-# typingtest
+# Typing Timings
 ## Garrett Blazzard
 
-    This application services keyboarding testing at Nebo school district. df
+    This application services keyboarding timings at Nebo school district.
